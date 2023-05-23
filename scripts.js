@@ -4,6 +4,13 @@ let cantidadBots = 0;
 let numeroPartida = [];
 let promedio;
 
+if(getJugadores().length > 0){
+    document.getElementById('form-inicio').style.display = 'none';
+    document.getElementById('tabla').style.display = 'block';
+    limpiarTabla();
+    cargarTabla();
+}
+
 
 function getJugadores(){
     return JSON.parse(sessionStorage.getItem("jugadores")) || [];
