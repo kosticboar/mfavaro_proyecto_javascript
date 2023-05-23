@@ -1,48 +1,62 @@
-alert("Bienvenidos al juego de adivina el 2/3 del promedio");
-alert("Cada jugador debe elegir un numero del 1 al 99 con el objetivo de adivinar el 2/3 del promedio de los numeros dados por los  demas jugadores.");
 
-let cantidadJugadores = prompt("Elija la cantidad de jugadores humanos que van a participar. \n Maximo 20 jugadores", "1");
-let jugadores = [];
+let cantidadJugadoresHumanos = 0;
+let cantidadBots = 0;
 let numeroPartida = [];
 let promedio;
 
 
-function validarCantidadJugadores(cantidadJugadores){
-    if(isNaN(cantidadJugadores)){
-        return true;
-    }else if(Number(cantidadJugadores) > 20 || Number(cantidadJugadores) < 2){
-        return true;
-    }else{
-        return false;
+function getJugadores(){
+    return JSON.parse(sessionStorage.getItem("jugadores")) || [];
+}
+
+function setJugadores(jugadores){
+    let jugadoresString =  JSON.stringify(jugadores);
+    sessionStorage.setItem("jugadores",jugadoresString);
+}
+
+
+function cargarBots(cantidad) {
+    // Carga una lista de jugadores
+    for (let i = 1; i <= cantidad; i++) {
+        let botJson = '{"nombre":"BOT'+i+'","tipo":"bot","puntaje":0,"numero":0}'
+        let newJugador = JSON.parse(botJson);
+        console.log(newJugador);
+        agregarJugador(newJugador);
     }
 }
 
-function cargarJugadores(cantJugadoresHumanos) {
-    // Carga una lista de jugadores
-    for (let i = 1; i <= 20; i++) {
-        let newJugador = new Object();
-        if (cantJugadoresHumanos > 0) {
-            newJugador.nombre = prompt("Ingrese nombre del Jugador " + i);
-            newJugador.tipo = "humano";
-            newJugador.puntaje = 0;
-            newJugador.numero = 0;
-            cantJugadoresHumanos--;
-        } else {
-            newJugador.nombre = "CPU" + i;
-            newJugador.tipo = "cpu";
-            newJugador.puntaje = 0;
-            newJugador.numero = 0;
-        }
-        jugadores.push(newJugador);
+function crearJugador() {
+    const formCrearJugadores = document.getElementById("form-crear-jugador");
+    const inputNombreJugador = document.getElementById("nuevo-nombre-jugador");
+    let newJugador = new Object();
+    newJugador.nombre = inputNombreJugador.value;
+    newJugador.tipo = "humano";
+    newJugador.puntaje = 0;
+    newJugador.numero = 0;
+    agregarJugador(newJugador);
+    inputNombreJugador.value = "";
+
+    if (getJugadores().length == cantidadJugadoresHumanos) {
+        cargarBots(cantidadBots);
+        formCrearJugadores.style.display = 'none';
     }
+}
+
+function agregarJugador(newJugador) {
+    let jugadores = getJugadores();
+    jugadores.push(newJugador);
+    setJugadores(jugadores);
+    limpiarTabla();
+    cargarTabla();
 }
 
 function existeGanador() {
     // Cuando quede 1 solo jugador tendremos 1 ganador
-    if(jugadores.length == 1){
+    let jugadores = getJugadores();
+    if (jugadores.length == 1) {
         alert("El ganador es " + jugadores[0].nombre + " !!!!");
         return true;
-    }else{
+    } else {
         return false;
     }
 }
@@ -76,20 +90,73 @@ function compararResultados() {
     });
 }
 
-function eliminarPerdedor(numeroPerdedor){
+function eliminarPerdedor(numeroPerdedor) {
     // Recorrela lista de jugadores buscando los jugadores que ingresaron el numero perdedor y los elimina de la lista
+    let jugadores = getJugadores();
     for (let i = 0; i < jugadores.length; i++) {
-        if(jugadores[i].numero == numeroPerdedor){
+        if (jugadores[i].numero == numeroPerdedor) {
             alert("El jugador " + jugadores[i].nombre + " (" + jugadores[i].numero + ")" + " a sido eliminado!!");
-            jugadores.splice(i,1);
+            jugadores.splice(i, 1);
         }
     }
 }
 
+function mostrarConfiguracion() {
+    document.getElementById('form-configuracion').style.display = 'block';
+    document.getElementById('form-inicio').style.display = 'none';
+}
+
+function configurar() {
+
+    const inputCantHumanos = document.getElementById("cantidad-jugadores-humanos");
+    const inputCantBots = document.getElementById("cantidad-bots");
+    const formConfiguracion = document.getElementById("form-configuracion");
+    const formCrearJugadores = document.getElementById("form-crear-jugador");
+
+    cantidadJugadoresHumanos = Number(inputCantHumanos.value);
+    cantidadBots = Number(inputCantBots.value);
+    formConfiguracion.style.display = 'none';
+    formCrearJugadores.style.display = 'block';
+}
+
+function cargarTabla() {
+    const tbody = document.getElementById('tbody-tabla');
+    const tabla = document.getElementById('tabla');
+    let jugadores = getJugadores();
+    tabla.style.display = "block";
+
+    for (let i = 0; i < jugadores.length; i++) {
+        let nuevaLinea = document.createElement("tr");
+        let dato1 = document.createElement("td");
+        let dato2 = document.createElement("td");
+
+        dato1.innerText = jugadores[i].nombre;
+        dato2.innerText = jugadores[i].numero;
+
+        nuevaLinea.appendChild(dato1);
+        nuevaLinea.appendChild(dato2);
+
+        tbody.appendChild(nuevaLinea);
+    }
+}
+
+function limpiarTabla() {
+    const tbody = document.getElementById('tbody-tabla');
+    tbody.innerHTML = "";
+}
+
+
+
+
+
+
+
+
+
 
 
 //
-while (validarCantidadJugadores(cantidadJugadores)) {
+/* while (validarCantidadJugadores(cantidadJugadores)) {
     cantidadJugadores = prompt("Ingrese una cantidad de jugadores valida");
 }
 
@@ -116,7 +183,7 @@ while (!existeGanador()) {
     // Se elimina el perdedor
     eliminarPerdedor(compararResultados());
     alert("Los numeros ingresados fueron: " + numeroPartida);
-}
+} */
 
 
 

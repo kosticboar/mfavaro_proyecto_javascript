@@ -6,15 +6,88 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto JavaScript</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-    <h1>Bienvenidos al proyecto final del curso de JavaScript </h1>
+<body class="bg-black">
+    <div class="container-fluid">
+        <h1>Bienvenidos al proyecto final del curso de JavaScript </h1>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="card bg-dark" id="form-inicio">
+                <label class="form-label text-white mb-3" for="">Adivinar 2/3 del promedio es un juego en el que
+                    varias
+                    personas proponen un número que
+                    ellos consideran será
+                    2/3 del promedio de las conjeturas de todos los que participan, y donde los números restringidos
+                    entre 0 y 100.
+                    El ganador es el que está más cerca del promedio de 2/3</label>
+                <button type="button" onclick="mostrarConfiguracion()"
+                    class="form-control btn btn-success">Configurar</button>
+            </div>
+
+            <div class="oculto card bg-dark" id="form-configuracion">
+                <div class="mb-3">
+                    <label class="form-label text-white" for="">Cantidad de jugadores Humanos</label>
+                    <input class="form-control" type="number" name="" id="cantidad-jugadores-humanos" min="1" max="100"
+                        value="1">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-white" for="">Cantidad de Bots</label>
+                    <input class="form-control" type="number" name="" id="cantidad-bots" min="1" max="100" value="1">
+                </div>
+                <div class="mt-5">
+                    <button class="form-control btn btn-primary" type="button" onclick="configurar()">Comenzar</button>
+                </div>
+            </div>
+
+            <div class="oculto card bg-dark" id="form-crear-jugador">
+                <div class="mb-3">
+                    <label class="form-label text-white" for="">Nombre de Jugador</label>
+                    <input class="form-control" type="text" name="" id="nuevo-nombre-jugador"
+                        placeholder="Ingrese su nombre">
+                </div>
+                <div class="mt-5">
+                    <button class="form-control btn btn-primary" type="button" onclick="crearJugador()">Crear</button>
+                </div>
+            </div>
+            <div class="oculto" id="partida">
+                <div class="mb-3">
+                    <h3>Turno de <span id="turno-jugador"></span></h3>
+                    <label class="form-label text-white" for="">Ingrese un numero entre 1 y 100</label>
+                    <input class="form-control" type="number" name="" id="input-numero" min="1" max="100" value="1">
+                </div>
+                <div class="mt-5">
+                    <button class="form-control btn btn-primary" type="button" onclick="crearJugador()">Crear</button>
+                </div>
+            </div>
+            <div class="oculto" id="tabla">
+                <table  class="table text-white">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Numero</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-tabla">
+                        <!--   datos   -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
     <h2>Autor: Gustavo Martin Favaro</h2>
     <h3>Adivinar 2/3 del promedio es un juego en el que varias personas proponen un número que ellos consideran será
         2/3 del promedio de las conjeturas de todos los que participan, y donde los números restringidos entre 0 y 100.
         El ganador es el que está más cerca del promedio de 2/3</h3>
-    <script src="./scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+    <script src="scripts.js"></script>
 </body>
 
 </html>
